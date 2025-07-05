@@ -1,0 +1,20 @@
+
+# Ignore all files and directories by default.
+*
+# unignore sub-directories first
+!** 
+# Now, un-ignore (re-include) specific file types recursively.
+!**/*.py
+!**/*.json
+!**/*.txt
+!**/*.html
+!**/*.css
+!**/*.js
+
+# Exclude the virtual environment directory. This takes precedence.
+venv/
+__pycache__/
+
+# Also, un-ignore the .gitignore file itself.
+!.gitignore
+!requirements.txt
