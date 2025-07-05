@@ -14,3 +14,8 @@ class Config:
     # File Upload Settings
     UPLOAD_FOLDER = os.path.join(basedir, 'instance', 'uploads')
     ALLOWED_EXTENSIONS = {'csv','json'}
+
+    # Redis configed variables
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_DB = 0

@@ -1,22 +1,14 @@
-from flask import  request, jsonify, current_app, g
-import redis
+from flask import  request, jsonify, current_app
 from werkzeug.utils import secure_filename
 import os
 import csv
 import json
-from werkzeug.datastructures import FileStorage
-from .repositories.connectors.redis_connector import RConnector
 
 
 class UploadService :
 
-    def __init__(self):
-        g.redis_client = current_app.redis_client 
-        pass
 
-
-    def handle_upload(self, file:FileStorage):
-        g.redis_client.ping()
+    def handle_upload(self, file):
         filename = secure_filename(file.filename)
         extension = filename.rsplit('.', 1)[1].lower()
         

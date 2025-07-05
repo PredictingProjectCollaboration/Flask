@@ -18,10 +18,7 @@ This is a starter template for a Python Flask web application.
 
 ## Running the Application
 
-To run the application in development mode, use the following command:
+Run file run.py (root directory) To run the application 
 
-```bash
-flask run
-```
 
-The application will be available at `http://127.0.0.1:5000`.
+The application will be available at `http://127.0.0.1:8001`.
