@@ -5,13 +5,12 @@ import os
 import csv
 import json
 from werkzeug.datastructures import FileStorage
-from .repositories.connectors.redis_connector import RConnector
+from .repositories.RedisKeyCreator import RedisKeyCreator
 
 
 class UploadService :
 
     def __init__(self):
-        g.redis_client = current_app.redis_client 
         pass
 
 
@@ -19,7 +18,7 @@ class UploadService :
         g.redis_client.ping()
         filename = secure_filename(file.filename)
         extension = filename.rsplit('.', 1)[1].lower()
-        
+        rows_added = 0
         processing_result = {}
         message = ""
         
@@ -29,10 +28,9 @@ class UploadService :
 
             if extension == 'csv':
                 csv_reader = csv.reader(file_content.splitlines())
-                headers = next(csv_reader)
-                first_row = next(csv_reader, None) # Safely get the first row
-                processing_result = {"filename": filename, "headers": headers, "first_data_row": first_row}
-                message = "CSV file processed successfully!"
+                redisKeyCreator = RedisKeyCreator()
+                processing_result, message, rows_added = redisKeyCreator.createKeyByCSVReader(filename, csv_reader)
+
 
             elif extension == 'json':
                 data = json.loads(file_content)
