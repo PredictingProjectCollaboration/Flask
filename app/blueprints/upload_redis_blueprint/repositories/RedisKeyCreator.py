@@ -1,5 +1,5 @@
 import csv
-from flask import g
+from flask import g,session
 
 class RedisKeyCreator:
 
@@ -8,17 +8,18 @@ class RedisKeyCreator:
         processing_result = {}
         message = ""
         rows_added = 0
+        session_id = session.sid
 
         # Use a pipeline to efficiently add all rows to Redis
         with g.redis_client.pipeline() as pipe:
             for i, row in enumerate(csv_reader):                        
                 # Create a unique key for each row, e.g., "csv:data.csv:0"
-                redis_key = f"csv:{filename}:{i}"
+                redis_key = f"csv:{filename}_{session_id}:{i}"
                 # Map headers to row values
                 row_data = dict(zip(headers, row))
                 # Add the HSET command to the pipeline
                 pipe.hset(redis_key, mapping=row_data)
-            
+                pipe.expire(redis_key, 3600*3) # Three hours (time of live)
                 rows_added += 1
             
             # Execute all commands in the pipeline at once if rows were found

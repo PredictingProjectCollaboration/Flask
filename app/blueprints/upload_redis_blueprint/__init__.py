@@ -9,17 +9,9 @@ upload_bp = Blueprint('upload_bp', __name__, url_prefix='/api')
 
 @upload_bp.before_request
 def before_upload_request():
-    try:
-        redis_client = redis.Redis(
-                host=app.config['REDIS_HOST'],
-                port=app.config['REDIS_PORT'],
-                db=app.config['REDIS_DB'],
-                decode_responses=True
-            )
-        g.redis_client = redis_client
-    except redis.exceptions.ConnectionError as e:
-        app.logger.error(f"Failed to connect to Redis: {e}")
-
+    if not hasattr(g, 'redis_client'): # Check to avoid re-assigning if other before_request did
+        g.redis_client = app.redis_client
+        print("--- g.redis_client set as reference to global client ---")
     pass
 
     
