@@ -14,6 +14,7 @@
 # Exclude the virtual environment directory. This takes precedence.
 venv/
 __pycache__/
+instance/
 
 # Also, un-ignore the .gitignore file itself.
 !.gitignore

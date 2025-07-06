@@ -29,6 +29,6 @@ def handle_upload():
     # 3. Check if the file is valid and has an allowed extension
     if file and allowed_file(file.filename):
         uploadService = UploadService()
-        return uploadService.handle_upload(file);
+        return uploadService.handle_upload(file)
     else:
         return jsonify({"error": "File type not allowed"}), 400

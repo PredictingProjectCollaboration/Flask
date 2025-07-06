@@ -11,6 +11,8 @@ from .repositories.RedisKeyCreator import RedisKeyCreator
 class UploadService :
 
     def __init__(self):
+        self.redisKeyCreator = RedisKeyCreator()
+
         pass
 
 
@@ -28,24 +30,12 @@ class UploadService :
 
             if extension == 'csv':
                 csv_reader = csv.reader(file_content.splitlines())
-                redisKeyCreator = RedisKeyCreator()
-                processing_result, message, rows_added = redisKeyCreator.createKeyByCSVReader(filename, csv_reader)
-
+                processing_result, message, rows_added = self.redisKeyCreator.createKeyByCSVReader(filename, csv_reader)
 
             elif extension == 'json':
-                data = json.loads(file_content)
-                summary = {}
-                if isinstance(data, list):
-                    summary['type'] = 'list'
-                    summary['item_count'] = len(data)
-                    if data and isinstance(data[0], dict):
-                        summary['first_item_keys'] = list(data[0].keys())
-                elif isinstance(data, dict):
-                    summary['type'] = 'dictionary'
-                    summary['keys'] = list(data.keys())
-                
-                processing_result = {"filename": filename, "summary": summary}
-                message = "JSON file processed successfully!"
+                data = json.loads(file_content)            
+                processing_result, message = self.redisKeyCreator.createKeyByJSONReader(filename, data)
+    
 
         except Exception as e:
             return jsonify({"error": f"Failed to process file: {str(e)}"}), 500

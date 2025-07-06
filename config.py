@@ -19,3 +19,8 @@ class Config:
     REDIS_HOST = 'localhost'
     REDIS_PORT = 6379
     REDIS_DB = 0
+
+    # SESSION
+    SESSION_TYPE = 'filesystem'
+    SESSION_PERMANENT = True
+    SESSION_FILE_DIR = os.path.join(basedir, 'instance', 'flask_sessions')
